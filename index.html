@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Train Schedule</title>
+
+    <!--resetting style-->
+
+    <link rel="stylesheet" type="text/css" href="style/reset.css">
+
+    <!--using bootstrap styling-->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+        integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+
+    <!--stylesheet-->
+
+    <link rel="stylesheet" type="text/css" href="style/style.css">
+
+</head>
+
+<body>
+    <!--bootstrap title jumbotron-->
+    <div class="jumbotron jumbotron-fluid">
+        <div class="container">
+            <h1 class="display-4">Train Schedule</h1>
+            <p class="lead">Is there a train you would like to keep track off? </p>
+            <p class="lead">Add it to the list below. </p>
+        </div>
+    </div>
+
+    <!--creating table structure with 2 simple dataset that will be on page always and user can add to it-->
+    <div class="TrainTimesArea">
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th scope="col">Current Train Schedule</th>
+                </tr>
+                <tr>
+                    <th scope="col">Train Name</th>
+                    <th scope="col">Destination</th>
+                    <th scope="col">Frequency(min)</th>
+                    <th scope="col">Next Arrival</th>
+                    <th scope="col">Minutes Away</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <th scope="row" class="trainname">Los Angeles Snail Train</th>
+                    <td class="destination">Skid Row</td>
+                    <td class="freq">10</td>
+                    <td class="nextArrival">_</td>
+                    <td class="MinsAway">_</td>
+                </tr>
+                <tr>
+                    <th scope="row" class="trainname">Tokyo Speed Runner Train</th>
+                    <td class="destination">Fukushima</td>
+                    <td class="freq">2</td>
+                    <td class="nextArrival">_</td>
+                    <td class="MinsAway">_</td>
+                </tr>
+
+            </tbody>
+        </table>
+    </div>
+
+    <!--creating area for the user to input new train information-->
+    <div>
+        <div class="row">
+            <div class="col -2">
+            </div>
+            <div class="col -6">
+                <h3>Add a train</h3>
+            </div>
+            <div class="col -2">
+            </div>
+        </div>
+        <div>
+            <div class="row">
+                <div class="col -2">
+                </div>
+                <div class="col -6">
+            <form>
+                <div class="form-group">
+                    <label for="text">Train Name</label>
+                    <input type="text" class="form-control" id="InputTrainName">
+                </div>
+                <div class="form-group">
+                    <label for="text">Destination</label>
+                    <input type="text" class="form-control" id="InputDestination">
+                </div>
+                <div class="form-group">
+                    <label for="text">Frequency</label>
+                    <input type="text" class="form-control" id="Frequency">
+                    <div class="form-group">
+                        <label for="text">starttime</label>
+                        <input type="text" class="form-control" id="starttime">
+                </div>
+                <button type="submit" id="submitbutton" class="btn btn-dark btn-primary">Submit</button>
+            </form>
+        </div>
+            <div class="col -2">
+            </div>
+            </div>
+        </div>
+
+
+
+    </div>
+
+
+    <!-- Link to jQuery -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
+
+    <!-- Link to Moment.js -->
+    <script src="https://cdn.jsdelivr.net/momentjs/2.12.0/moment.min.js"></script>
+
+    <!--link toFirebase: copied from firebase webpage-->
+ <!-- The core Firebase JS SDK is always required and must be listed first -->
+    <script src="https://www.gstatic.com/firebasejs/7.8.1/firebase-app.js"></script>
+
+    <!-- TODO: Add SDKs for Firebase products that you want to use
+     https://firebase.google.com/docs/web/setup#available-libraries -->
+    <script src="https://www.gstatic.com/firebasejs/7.8.1/firebase-analytics.js"></script>
+
+
+<!--just checking jQuery is working properly-->    
+    <script>
+
+        $(document).ready(function () {
+            console.log("ready!");
+        });
+    </script>
+
+<!--Javascript/JQuery below-->
+   
+
+    <script>
+        //Copied from Firebase: Your web app's Firebase configuration
+        var firebaseConfig = {
+            apiKey: "AIzaSyC0rh0pnflh72wy6_8TM-q8OJMfTF3jJvA",
+            authDomain: "trainscheduler-d3087.firebaseapp.com",
+            databaseURL: "https://trainscheduler-d3087.firebaseio.com",
+            projectId: "trainscheduler-d3087",
+            storageBucket: "trainscheduler-d3087.appspot.com",
+            messagingSenderId: "1055946506494",
+            appId: "1:1055946506494:web:1c0213f8249fbd461c25af",
+            measurementId: "G-GRBH9MGXX6"
+        };
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+        firebase.analytics();
+
+       var database=firebase.database();
+
+      
+
+//declaring variable i will use to hold values from user input and push to firebase
+
+var tname
+var destination
+var timeofArrival
+var Frequency
+
+//event listener for submit button
+
+$("#submitbutton").on("click", function(){
+    
+    //reassign empty variable with user input
+    tname=$("#InputTrainName").val().trim();
+
+    //push to firebase
+    database.ref().push({
+
+        trainname:tname,
+    });
+
+});
+
+// i keep getting an error and don't know how to process. I tried to simply push the name input to fire base
+//  psuedocode for the rest.
+
+// i need to figure out how to push to the user input to fire base.
+
+// i also need to take the arrival time for the trains to and calculate the time until the train arrives to display it in the "Next arrival" and "minutes away" columns.
+
+//I would do this by assigning the value of the starttime to a variable and calculating the quantity and time unit using the moment notation.
+
+// current time ==> moment()
+
+
+
+       
+        
+        
+    </script>
+
+
+</body>
+
+</html>
